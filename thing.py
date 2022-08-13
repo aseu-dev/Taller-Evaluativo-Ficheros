@@ -22,13 +22,9 @@ def sum_tempo(hora_inicial: int, minutos_iniciales: int, minutos_a_agregar: int)
         minutos = 0
     elif (minutos_iniciales + minutos_a_agregar) > 60:
         horas_acumuladas = 0
-        minutos_restantes = minutos_a_agregar
-        count = 1
+        minutos_restantes = minutos_a_agregar + minutos_iniciales
         while True:
             if minutos_iniciales + minutos_restantes >= 60:
-                if count == 1:
-                    minutos_restantes = minutos_a_agregar + minutos_iniciales
-                    count -= 1
                 minutos_restantes -= 60
                 horas_acumuladas += 1
                 if minutos_restantes < 60:
