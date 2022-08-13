@@ -1,17 +1,32 @@
-def math_tempo(hora_inicial: int, minutos_iniciales: int, minutos_a_agregar: int) -> str:
-    ''' Funcion para sumar tiempos '''
+def sum_tempo(hora_inicial: int, minutos_iniciales: int, minutos_a_agregar: int) -> str:
+    ''' Funcion para sumar minutos a una hora inicial: 6\t:\t45 + 20 -> 7\t:\t15 '''
     
-    hora_inicio = hora_inicial
-    minuto_inicio = minutos_iniciales
-    horas = hora_inicio
-    minutos = minuto_inicio
-    if (minuto_inicio + minutos_a_agregar) == 60:
-        horas += hora_inicio+1
-    elif (minuto_inicio + minutos_a_agregar) > 60:
-        horas += hora_inicio+1
-        minutos += max(minutos_iniciales,minutos_a_agregar) - min(minutos_a_agregar,minutos_iniciales)
+    horas = hora_inicial
+    minutos = minutos_iniciales
+    if (minutos_iniciales + minutos_a_agregar) == 60:
+        horas += 1
+        minutos = 0
+    elif (minutos_iniciales + minutos_a_agregar) > 60:
+        horas_acumuladas = 0
+        minutos_restantes = minutos_a_agregar
+        count = 1
+        while True:
+            if minutos_iniciales + minutos_restantes >= 60:
+                if count == 1:
+                    minutos_restantes = minutos_a_agregar + minutos_iniciales
+                    count -= 1
+                minutos_restantes -= 60
+                horas_acumuladas += 1
+                if minutos_restantes < 60:
+                    minutos = minutos_restantes
+                    horas += horas_acumuladas
+                    break
+            else:
+                minutos = minutos_restantes
+                horas += horas_acumuladas
+                break
     else:
-        horas = hora_inicio
+        horas = hora_inicial
         minutos += minutos_a_agregar
     if horas < 10 or minutos < 10: 
         if minutos < 10 and horas < 10:
@@ -22,28 +37,24 @@ def math_tempo(hora_inicial: int, minutos_iniciales: int, minutos_a_agregar: int
             return f'0{horas}\t:\t{minutos}'
     else:
         return f'{horas}\t:\t{minutos}'
+
+def rest_tempo(hora_inicial: int, minuto_inicial: int, hora_final: int, minuto_final: int) -> str:
     
+    pass
 def only_numbers(entrada: list) -> int:
-    ''' Recibe una lista y retorna otra lista basada en la inicial pero sin caracteres de tipo String y espacios '''
+    ''' Recibe una lista con cuatro numeros y devuelve dos numeros compuestos por pares de la lista: [1, 2, 3, 4] -> 12, 34 '''
     
-    aux1 = []
-    aux2= []
-    aux3= []
+    aux = []
     for i in entrada:
         try:
             int(i)
         except ValueError:
             pass
         else:
-            aux1 += i
-    for j in aux1:
-        if j != ' ':
-            aux2 += [int(j)]
+            aux += [int(i)]
             
-    combinacion1, combinacion2 = f'{aux2[0]}{aux2[1]}', f'{aux2[2]}{aux2[3]}'
-    numero1 = [int(combinacion1)]
-    numero2 = [int(combinacion2)]
-    return numero1, numero2
+    combinacion1, combinacion2 = int(f'{aux[0]}{aux[1]}'), int(f'{aux[2]}{aux[3]}')
+    return combinacion1, combinacion2
 
 def extraerNumeros(string: str) -> list[int]:
     ''' Recibe un string, y retorna una lista con todos los caracteres  compatibles con el formato integer '''
@@ -53,18 +64,40 @@ def extraerNumeros(string: str) -> list[int]:
         lista += i
     return only_numbers(lista)
 
-# def escritor():
-#     hora_final = '1400'
-#     hora_inicio = int(input('Ingrese la hora de inicio: '))
-#     minuto_inicio = int(input('Ingrese el minuto inicial: '))
-#     programa_de_inicio = int(input('Ingrese el tiempo del programa de inicio: '))
-#     ajustes_iniciales = int(input('Ingrese el tiempo de los ajustes iniciales: '))
-#     inicio_produccion = int(input('Ingrese el tiempo del inicio de produccion: '))
-#     reponer_materia_prima = int(input('Ingrese el tiempo de la repocicion de materia prima: '))
-#     distribucion_productos = int(input('Ingrese el tiempo de la distribucion de productos: '))
-#     almacenamiento = int(input('Ingrese el tiempo de almacenamiento: '))
-#     time1 = math_tempo(hora_inicio,minuto_inicio,programa_de_inicio)
+def TODO(tempo: str) -> int:
     
-#     time2= math_tempo
+    num1, num2 = extraerNumeros(tempo)
+    return num1, num2
 
-print(math_tempo(1,20,20))
+def escritor():
+    
+    
+    hora_final = ['14:00']
+    hora_inicio = int(input('Ingrese la hora de inicio: ')) # 6
+    minuto_inicio = int(input('Ingrese el minuto inicial: ')) # 45
+    programa_de_inicio = int(input('Ingrese el tiempo del programa de inicio: ')) # 20
+    ajustes_iniciales = int(input('Ingrese el tiempo de los ajustes iniciales: ')) # 10
+    inicio_produccion = int(input('Ingrese el tiempo del inicio de produccion: ')) # 190
+    reponer_materia_prima = int(input('Ingrese el tiempo de la repocicion de materia prima: ')) # 70
+    distribucion_productos = int(input('Ingrese el tiempo de la distribucion de productos: ')) # 55
+    almacenamiento = int(input('Ingrese el tiempo de almacenamiento: ')) # 105
+
+    tempo1 = sum_tempo(hora_inicio,minuto_inicio,programa_de_inicio)
+    print(tempo1)
+    hora1, minuto1 = TODO(tempo1)
+    tempo2 = sum_tempo(hora1,minuto1,ajustes_iniciales)
+    print(tempo2)
+    hora2, minuto2 = TODO(tempo2)
+    tempo3 = sum_tempo(hora2, minuto2, inicio_produccion)
+    print(tempo3)
+    hora3, minuto3 = TODO(tempo3)
+    tempo4 = sum_tempo(hora3, minuto3, reponer_materia_prima)
+    print(tempo4)
+    hora4, minuto4 = TODO(tempo4)
+    tempo5 = sum_tempo(hora4, minuto4, distribucion_productos)
+    print(tempo5)
+    hora5, minuto5 = TODO(tempo5)
+    tempo6 = sum_tempo(hora5, minuto5, almacenamiento)
+    print(tempo6)
+
+escritor()
