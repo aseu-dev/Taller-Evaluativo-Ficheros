@@ -11,6 +11,7 @@ def convertir_formato(horas: int, minutos:int) -> str:
     else:
         return f'{horas}\t:\t{minutos}'
 
+
 def sum_tempo(hora_inicial: int, minutos_iniciales: int, minutos_a_agregar: int) -> str:
     ''' Funcion para sumar minutos a una hora inicial: 
         6\t:\t45 + 20 -> 7\t:\t15 '''
@@ -40,13 +41,21 @@ def sum_tempo(hora_inicial: int, minutos_iniciales: int, minutos_a_agregar: int)
         minutos += minutos_a_agregar
     return convertir_formato(horas, minutos)
 
-def rest_tempo(hora_inicial: str, hora_final: str) -> str:
+def rest_tempo(hora_inicial: str, hora_final: str) -> int:
     """ Funcion que solicita dos entradas de tipo texto, con formato hora y devuelve la diferencia entre ellas, por ejemplo:
-        "02\t:\t30" - "01\t:\t25"  -> "1\t:\t05" """
-    hora1, minuto1 = extraccion(hora_inicial)
-    hora2, minuto2 = extraccion(hora_final)
+        "02\t:\t30" - "01\t:\t30"  ->  "60" """
 
-    pass
+    hora01, minuto01 = extraccion(hora_inicial)
+    hora02, minuto02 = extraccion(hora_final)
+    minutos_hora_inicial = minuto01
+    minutos_hora_final = minuto02
+    for _ in range(hora01):
+        minutos_hora_inicial += 60
+    for _ in range(hora02):
+        minutos_hora_final += 60
+    diferencia = max(minutos_hora_final,minutos_hora_inicial) - min(minutos_hora_inicial, minutos_hora_final)
+    return diferencia
+
 def only_numbers(entrada: list) -> int:
     ''' Recibe una lista con cuatro numeros y devuelve dos numeros compuestos por pares de la lista: 
         [1, 2, 3, 4] -> 12, 34 '''
@@ -78,10 +87,29 @@ def extraccion(tempo: str) -> int:
     num1, num2 = extraer_numeros(tempo)
     return num1, num2
 
+def mayor_diferencia(n1: str, n2: str, n3: str, n4: str, n5: str, n6: str) -> str:
+    """ Recibe una secuencia de 6 cadenas de texto en formato hora militar y devuelve la hora a
+        la que se finalizo el lapzo de tiempo mas largo  """
+    diferencia1 = rest_tempo(n1,n2)
+    diferencia2 = rest_tempo(n2,n3)
+    diferencia3 = rest_tempo(n3,n4)
+    diferencia4 = rest_tempo(n4,n5)
+    diferencia5 = rest_tempo(n5,n6)
+    mayor_diferencia_ = max(diferencia1,diferencia2,diferencia2,diferencia3,diferencia4,diferencia5)
+    if mayor_diferencia_ == diferencia1:
+        return n2
+    elif mayor_diferencia_ == diferencia2:
+        return n3
+    elif mayor_diferencia_ == diferencia3:
+        return n4
+    else:
+        return n5
+    
+
 def escritor(nombre_archivo: str, lista: list) -> None:
     """ Funcion que se encarga de escribir elementos de una lista dentro de un archivo de formato .txt """
 
-    with open(f'./{nombre_archivo}', 'w') as file:
+    with open(f'./{nombre_archivo}.txt', 'w') as file:
         for tempo in lista:
             file.write(f'{tempo}\n')
 
@@ -107,15 +135,18 @@ tempo5 = sum_tempo(hora4, minuto4, distribucion_productos)
 hora5, minuto5 = extraccion(tempo5)
 tempo6 = sum_tempo(hora5, minuto5, almacenamiento)
 
+mayor_diferencia_tempo = mayor_diferencia(tempo1,tempo2,tempo3,tempo4,tempo5,tempo6)
+if rest_tempo(hora_final,tempo6) > 0:
+    sobretiempo = rest_tempo(hora_final,tempo6)
+
 tempos = [
-    
     (f'Programa de inicio\t \t{tempo1}'),
     (f'Ajustes iniciales\t \t{tempo2}'),
     (f'Inicio de produccion\t \t{tempo3}'),
     (f'Reponer Materia Prima\t \t{tempo4}'),
     (f'Distribucion de productos\t \t{tempo5}'),
     (f'Almacenamiento\t \t{tempo6}'),
-    (),
-    ()
+    (f'Hora final con mayor tiempo\t \t{mayor_diferencia_tempo}'),
+    (f'Sobretiempo\t \t{sobretiempo} minutos')
 ]
 escritor('resultados', tempos)
