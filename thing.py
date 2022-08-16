@@ -142,13 +142,13 @@ if rest_tempo(hora_final,tempo6) > 0:
     sobretiempo = rest_tempo(hora_final,tempo6)
 
 tempos = [
-    (f'Programa de inicio\t \t{tempo1}'),
-    (f'Ajustes iniciales\t \t{tempo2}'),
-    (f'Inicio de produccion\t \t{tempo3}'),
-    (f'Reponer Materia Prima\t \t{tempo4}'),
-    (f'Distribucion de productos\t \t{tempo5}'),
-    (f'Almacenamiento\t \t{tempo6}'),
-    (f'Hora final con mayor tiempo\t \t{mayor_diferencia_tempo}'),
-    (f'Sobretiempo\t \t{sobretiempo} minutos')
+    (f'Programa de inicio	 	         {tempo1}'),
+    (f'Ajustes iniciales	 	         {tempo2}'),
+    (f'Inicio de produccion             {tempo3}'),
+    (f'Reponer Materia Prima            {tempo4}'),
+    (f'Distribucion de productos        {tempo5}'),
+    (f'Almacenamiento                   {tempo6}'),
+    (f'Hora final con mayor tiempo      {mayor_diferencia_tempo}'),
+    (f'Sobretiempo                      {sobretiempo} minutos')
 ]
 escritor('resultados', tempos)
