@@ -102,8 +102,10 @@ def mayor_diferencia(n1: str, n2: str, n3: str, n4: str, n5: str, n6: str) -> st
         return n3
     elif mayor_diferencia_ == diferencia3:
         return n4
-    else:
+    elif mayor_diferencia_ == diferencia4:
         return n5
+    else:
+        return n6
     
 
 def escritor(nombre_archivo: str, lista: list) -> None:
